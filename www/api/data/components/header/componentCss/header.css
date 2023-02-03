@@ -1,0 +1,8 @@
+header.vil-header .vil-logo{
+  display: flex;
+  align-items: center;
+}
+
+header.vil-header img {
+  height: 64px;
+}

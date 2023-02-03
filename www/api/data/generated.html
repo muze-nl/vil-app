@@ -4,6 +4,15 @@
     <meta charset="utf-8">
     <!-- Component CSS -->
     <style>
+      /* header */
+      header.vil-header .vil-logo{
+        display: flex;
+        align-items: center;
+      }
+      
+      header.vil-header img {
+        height: 64px;
+      }
     </style>
     <!-- /Component CSS -->
     <!-- Head HTML -->
@@ -172,6 +181,17 @@
     <!-- Body HTML -->
     <!-- /Body HTML -->
     <!-- Component HTML templates -->
+    <template id="header">
+      <header class="vil-header">
+        <nav>
+          <div is="simply-component" rel="menu"></div>
+        </nav>
+        <div class="vil-logo">
+          <img src="https://i.postimg.cc/3NpqwDxm/wireframe-block.png" alt="placeholder logo"> 
+          <span class="vil-logo-text">Header placeholder text</span>
+        </div>
+      </header>
+    </template>
     <template id="utrecht-blockquote">
       <blockquote>
         <p>The Quick Brown Fox Jumps Over The Lazy Dog</p>
@@ -230,9 +250,7 @@
     </template>
     <!-- /Component HTML templates -->
     <utrecht-html-content class="utrecht-theme">
-      <nav>
-        <div is="simply-component" rel="menu"></div>
-      </nav>
+      <div is="simply-component" rel="header"></div>
       <div class="main" data-simply-field="page" data-simply-content="template">
     <!-- Page HTML templates -->
     <template data-simply-template="home">
