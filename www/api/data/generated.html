@@ -200,6 +200,9 @@
             "#component-preview" : function(params) {
               editor.pageData.page = "component-preview";
             },
+            "#view" : function(params) {
+              editor.pageData.page = "view";
+            },
             "/" : function() {
               editor.pageData.page = "home";
             }
@@ -394,6 +397,16 @@
         <div class="vil-pageframe-main">
           <div class="vil-pageframe-content">
             <div is="simply-component" rel="utrecht-login-form"></div>
+          </div>
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="utrecht-login-explainer"></div>
+          </div>
+        </div>
+    </template>
+    <template data-simply-template="view">
+        <div class="vil-pageframe-main">
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="utrecht-table"></div>
           </div>
           <div class="vil-pageframe-content">
             <div is="simply-component" rel="utrecht-login-explainer"></div>
