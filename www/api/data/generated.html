@@ -13,6 +13,32 @@
       header.vil-header img {
         height: 64px;
       }
+      /* pageframe-styling */
+      .vil-pageframe-main {
+        display: flex;
+        flex-direction: row;
+      }
+      
+      .vil-pageframe-content {
+        width: 50%;
+        padding-right: var(--vil-gutter-width);
+      }
+      
+      @media(max-width: 769px) {
+        .vil-pageframe-main {
+          flex-direction: column;
+        }
+        
+        .vil-pageframe-content {
+          width: 100%;
+          padding-right: inherit;
+        }
+      }
+      /* login-form */
+      .vil-form-group {
+        display: flex;
+        align-items: center;
+      }
     </style>
     <!-- /Component CSS -->
     <!-- Head HTML -->
@@ -159,6 +185,9 @@
           /* /Commands */
           /* Routes */
           routes: {
+            "#component-preview" : function(params) {
+              editor.pageData.page = "component-preview";
+            },
             "/" : function() {
               editor.pageData.page = "home";
             }
@@ -191,6 +220,35 @@
           <span class="vil-logo-text">Header placeholder text</span>
         </div>
       </header>
+    </template>
+    <template id="utrecht-login-explainer">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+        sed do eiusmod tempor incididunt ut labore et dolore magna 
+        aliqua. Nec feugiat nisl pretium fusce id. Eget lorem dolor 
+        sed viverra ipsum nunc aliquet. Ut tellus elementum sagittis
+        vitae et leo duis. Gravida quis blandit turpis cursus in hac 
+        habitasse. Natoque penatibus et magnis dis parturient montes 
+        nascetur. Tortor at risus viverra adipiscing. Pulvinar 
+        pellentesque habitant morbi tristique. Eget nunc scelerisque 
+        viverra mauris in. Sit amet justo donec enim diam vulputate ut 
+        pharetra.
+      </p>
+    </template>
+    <template id="utrecht-login-form">
+      <form class="utrecht-form" method="POST" action=".">
+        <div class="vil-form-group">
+          <input type="text" list="users">   
+          <datalist id="users">
+            <option>user 1</option>
+            <option>user 2</option>
+            <option>user 3</option>
+          </datalist>
+          <button type="submit">Inloggen</button>
+        </div>
+      </form>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <a href="">Uitleg</a>
     </template>
     <template id="utrecht-blockquote">
       <blockquote>
@@ -253,12 +311,24 @@
       <div is="simply-component" rel="header"></div>
       <div class="main" data-simply-field="page" data-simply-content="template">
     <!-- Page HTML templates -->
-    <template data-simply-template="home">
-        <h1>Vil app</h1>
+    <template data-simply-template="component-preview">
         <div is="simply-component" rel="utrecht-table"></div>
         <div is="simply-component" rel="utrecht-button"></div>
         <div is="simply-component" rel="utrecht-select"></div>
         <div is="simply-component" rel="utrecht-blockquote"></div>
+        <form>
+          <div is="simply-component" rel="utrecht-input-submit"></div>
+        </form>
+    </template>
+    <template data-simply-template="home">
+        <div class="vil-pageframe-main">
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="utrecht-login-form"></div>
+          </div>
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="utrecht-login-explainer"></div>
+          </div>
+        </div>
     </template>
     <!-- /Page HTML templates -->
       </div>
