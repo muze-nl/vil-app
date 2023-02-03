@@ -1,0 +1,20 @@
+.vil-pageframe-main {
+  display: flex;
+  flex-direction: row;
+}
+
+.vil-pageframe-content {
+  width: 50%;
+  padding-right: var(--vil-gutter-width);
+}
+
+@media(max-width: 769px) {
+  .vil-pageframe-main {
+    flex-direction: column;
+  }
+  
+  .vil-pageframe-content {
+    width: 100%;
+    padding-right: inherit;
+  }
+}
