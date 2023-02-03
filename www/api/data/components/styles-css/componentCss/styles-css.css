@@ -1,0 +1,13 @@
+.vil-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.vil-input select {
+  cursor: pointer;
+}
+
+.vil-edit-btn-group {
+  display: flex;
+  justify-content: space-between;
+}

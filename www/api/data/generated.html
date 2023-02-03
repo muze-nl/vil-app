@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Component CSS -->
     <style>
       /* header */
@@ -19,6 +20,11 @@
       header.vil-header img {
         height: var(--vil-logo-height);
         margin-right: var(--vil-gutter-width);
+      }
+      /* login-form-group */
+      .vil-form-group {
+        display: flex;
+        align-items: center;
       }
       /* pageframe-styling */
       .vil-pageframe-main {
@@ -46,14 +52,25 @@
         --vil-gutter-width: 1em;
         --vil-logo-height: 64px;
       }
-      /* login-form */
-      .vil-form-group {
+      /* styles-css */
+      .vil-input {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+      }
+      
+      .vil-input select {
+        cursor: pointer;
+      }
+      
+      .vil-edit-btn-group {
+        display: flex;
+        justify-content: space-between;
       }
     </style>
     <!-- /Component CSS -->
     <!-- Head HTML -->
+    <!-- solid-auth-fetcher -->
+    <script src="/js/solid-auth-fetcher.bundle.js"></script>
     <!-- design-system -->
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/@utrecht/design-tokens/dist/index.css">
     <script
@@ -189,10 +206,54 @@
         simplyApp = simply.app({
           /* Actions */
           actions: {
+            getProfile : function() {
+              var session = solidAuthFetcher.getSession()
+              .then(function(session) {
+                if (session) {
+                  editor.pageData.webId = session.webId;
+                  solidAuthFetcher.fetch(session.webId)
+                  .then(function(response) {
+                    return response.text();
+                  })
+                  .then(function(profile) {
+                    console.log(profile);
+                  });
+                }
+              }); 
+            },
+            solidLogin : function(webIdProvider, returnPage) {
+              var session = solidAuthFetcher.getSession()
+              .then(function(session) {
+                if (session) {
+                  console.log(session.webId);
+                  editor.pageData.webId = session.webId;
+                  document.location.href = returnPage;
+                } else {
+                  console.log(editor.pageData.webIdProvider);
+                  solidAuthFetcher.login({
+                    oidcIssuer: webIdProvider,
+                    redirect: returnPage
+                  })
+                  .then(function(session) {
+                    console.log(session.webId);
+                    editor.pageData.webId = session.webId;
+                  });
+                }
+              });
+            }
           },
           /* /Actions */
           /* Commands */
           commands: {
+            login : function(el) {
+              simplyApp.actions.solidLogin(
+                editor.pageData.webIdProvider,
+                document.location.href + "#view"
+              );
+            },
+            edit : function(el) {
+              document.location.href + "#edit"
+            }
           },
           /* /Commands */
           /* Routes */
@@ -200,7 +261,11 @@
             "#component-preview" : function(params) {
               editor.pageData.page = "component-preview";
             },
+            "#edit" : function(params) {
+              editor.pageData.page = "edit";
+            },
             "#view" : function(params) {
+              simplyApp.actions.getProfile();
               editor.pageData.page = "view";
             },
             "/" : function() {
@@ -225,6 +290,66 @@
     <!-- Body HTML -->
     <!-- /Body HTML -->
     <!-- Component HTML templates -->
+    <template id="edit-alleenstaande">
+      <div class="vil-input">
+        <label for="alleenstaande">Alleenstaande</label>
+        <select id="alleenstaande">
+           <option value="Ja">Ja</option>
+        	 <option value="Nee">Nee</option>
+        </select>
+      </div>
+    </template>
+    <template id="edit-aow">
+      <div class="vil-input">
+        <label for="aow">AOW leeftijd behaald</label>
+        <select id="aow">
+           <option value="Ja">Ja</option>
+        	 <option value="Nee">Nee</option>
+        </select>
+      </div>
+    </template>
+    <template id="edit-button-group">
+      <div class="vil-edit-btn-group">
+        <button type="submit" data-simply-command="back">Terug</button>
+        <button type="submit" data-simply-command="save">Opslaan</button>
+      </div>
+    </template>
+    <template id="edit-inkomen">
+      <div class="vil-input">
+        <label>Inkomen per maand</label>
+        <input type="number" min="1000" step="100" value="2000">
+      </div>
+    </template>
+    <template id="edit-ouder-dan-21">
+      <div class="vil-input">
+        <label for="ouder-dan-21">Ouder dan 21</label>
+        <select id="ouder-dan-21">
+           <option value="Ja">Ja</option>
+        	 <option value="Nee">Nee</option>
+        </select>
+      </div>
+    </template>
+    <template id="edit-thuiswonend">
+      <div class="vil-input">
+        <label for="thuiswonend">Thuiswonende kinderen</label>
+        <select id="thuiswonend">
+           <option value="Ja">Ja</option>
+        	 <option value="Nee">Nee</option>
+        </select>
+      </div>
+    </template>
+    <template id="edit-vermogen">
+      <div class="vil-input">
+        <label>Vermogen</label>
+        <input type="number" min="1000" step="100" value="20000">
+      </div>
+    </template>
+    <template id="edit-woonplaats">
+      <div class="vil-input">
+        <label>Woonplaats</label>
+        <input type="text" value="Utrecht">
+      </div>
+    </template>
     <template id="header">
       <header class="vil-header">
         <nav>
@@ -241,69 +366,39 @@
         <!-- div is="simply-component" rel="menu"></div -->
       </header>
     </template>
-    <template id="utrecht-login-explainer">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna 
-        aliqua. Nec feugiat nisl pretium fusce id. Eget lorem dolor 
-        sed viverra ipsum nunc aliquet. Ut tellus elementum sagittis
-        vitae et leo duis. Gravida quis blandit turpis cursus in hac 
-        habitasse. Natoque penatibus et magnis dis parturient montes 
-        nascetur. Tortor at risus viverra adipiscing. Pulvinar 
-        pellentesque habitant morbi tristique. Eget nunc scelerisque 
-        viverra mauris in. Sit amet justo donec enim diam vulputate ut 
-        pharetra.
-      </p>
+    <template id="login-explainer">
+      <div class="utrecht-article">
+        <p class="utrecht-paragraph">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+          sed do eiusmod tempor incididunt ut labore et dolore magna 
+          aliqua. Nec feugiat nisl pretium fusce id. Eget lorem dolor 
+          sed viverra ipsum nunc aliquet. Ut tellus elementum sagittis
+          vitae et leo duis. Gravida quis blandit turpis cursus in hac 
+          habitasse. Natoque penatibus et magnis dis parturient montes 
+          nascetur. Tortor at risus viverra adipiscing. Pulvinar 
+          pellentesque habitant morbi tristique. Eget nunc scelerisque 
+          viverra mauris in. Sit amet justo donec enim diam vulputate ut 
+          pharetra.(login)
+        </p>
+      </div>
     </template>
-    <template id="utrecht-login-form">
-      <form class="utrecht-form" method="POST" action=".">
+    <template id="login-form">
+      <form class="utrecht-form" method="POST" action="#">
         <div class="vil-form-group">
-          <input type="url" list="webid-providers" autocomplete="url" placeholder="Kies uw WebID provider om in te loggen">   
+          <input name="webIdProvider" data-simply-field="webIdProvider" type="text" list="webid-providers" autocomplete="url" placeholder="Kies uw WebID provider om in te loggen">
           <datalist id="webid-providers">
-            <option>https://solidcommunity.net/</option>
-            <option>https://mijnsolidpod.nl/</option>
+            <option value="https://solidcommunity.net/">https://solidcommunity.net/</option>
+            <option value="https://mijnsolidpod.nl/">https://mijnsolidpod.nl/</option>
           </datalist>
-          <button type="submit">Inloggen</button>
+          <button type="submit" data-simply-command="login">Inloggen</button>
         </div>
       </form>
       <p>Verbind met uw Solid Pod om de inkomenstoets uit te voeren.</p>
-    </template>
-    <template id="utrecht-menu">
-      <div class="utrecht-navhtml">
-        <nav class="topnav utrecht-topnav">
-          <ul class="utrecht-topnav__list">
-            <li class="utrecht-topnav__item">
-              <a class="utrecht-topnav__link" href="https://example.com/">
-                Wonen en leven
-              </a>
-            </li>
-            <li class="utrecht-topnav__item">
-              <a class="utrecht-topnav__link" href="https://example.com/">
-                Werk en inkomen
-              </a>
-            </li>
-            <li class="utrecht-topnav__item">
-              <a class="utrecht-topnav__link" href="https://example.com/">
-                Ondernemen
-              </a>
-            </li>
-            <li class="utrecht-topnav__item">
-              <a class="utrecht-topnav__link" href="https://example.com/">
-                Bestuur en organisatie
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      
     </template>
     <template id="utrecht-blockquote">
       <blockquote>
         <p>The Quick Brown Fox Jumps Over The Lazy Dog</p>
       </blockquote>
-    </template>
-    <template id="utrecht-button">
-      <button type="button">The Quick Brown Fox Jumps Over The Lazy Dog</button>
     </template>
     <template id="utrecht-input-submit">
       <input type="text" placeholder="foo"><input type="submit" value="Submit">
@@ -321,7 +416,7 @@
       <table
              lang="nl"
              summary="Overzicht van de stemmen voor en tegen het betaald parkeren."
-      >
+             >
         <caption>Uitslag internetpeiling 8 juni tot en met 28 juni</caption>
         <thead>
           <tr>
@@ -352,6 +447,7 @@
           </tr>
         </tbody>
       </table>
+      
     </template>
     <template id="utrecht-topnav">
       <nav class="topnav">
@@ -379,6 +475,79 @@
         </ul>
       </nav>
     </template>
+    <template id="view-explainer">
+      <div class="utrecht-article">
+        <p class="utrecht-paragraph">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+          sed do eiusmod tempor incididunt ut labore et dolore magna 
+          aliqua. Nec feugiat nisl pretium fusce id. Eget lorem dolor 
+          sed viverra ipsum nunc aliquet. Ut tellus elementum sagittis
+          vitae et leo duis. Gravida quis blandit turpis cursus in hac 
+          habitasse. Natoque penatibus et magnis dis parturient montes 
+          nascetur. Tortor at risus viverra adipiscing. Pulvinar 
+          pellentesque habitant morbi tristique. Eget nunc scelerisque 
+          viverra mauris in. Sit amet justo donec enim diam vulputate ut 
+          pharetra.(view)
+        </p>
+      </div>
+    </template>
+    <template id="view-navigation-complete">
+      <p>De benodigde gegevens zijn aanwezig.</p>
+      <button type="submit">Gegevens aanpassen</button>
+      <button type="submit">Aanvragen</button>
+    </template>
+    <template id="view-navigation-incomplete">
+      <p>Niet alle gegevens zijn bekend.</p>
+      <button type="submit" data-simply-command="edit">Gegevens aanvullen</button>
+    </template>
+    <template id="view-navigation">
+      <div data-simply-field="fields-complete" data-simply-content="template" data-simply-default-tempalte="false" data-simply-default-value="false">
+        <template data-simply-template="true" rel="view-navigation-complete"></template>
+        <template data-simply-template="false" rel="view-navigation-incomplete"></template>
+      </div>
+    </template>
+    <template id="view-overview">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Benodigd gegeven</th>
+            <th scope="col">
+              Uitgelezen waarde
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Woonplaats</td>
+            <td data-simply-field="woonplaats">Utrecht</td>
+          </tr>
+          <tr>
+            <td>AOW Leeftijd behaald</td>
+            <td data-simply-field="aow-leeftijd-behaald" data-simply-transformer="boolean">Nee</td>
+          </tr>
+          <tr>
+            <td>Ouder dan 21</td>
+            <td data-simply-field="ouder-dan-21" data-simply-transformer="boolean">Ja</td>
+          </tr>
+          <tr>
+            <td>Inkomen per maand</td>
+            <td data-simply-field="inkomen-per-maand" data-simply-transformer="currency">Onbekend</td>
+          </tr>
+          <tr>
+            <td>Vermogen</td>
+            <td data-simply-field="vermogen" data-simply-transformer="currency">Onbekend</td>
+          </tr>
+          <tr>
+            <td>Alleenstaande</td>
+            <td data-simply-field="alleenstaande" data-simply-transformer="boolean">Nee</td>
+          </tr>
+          <tr>
+            <td>Thuiswonende kinderen</td>
+            <td data-simply-field="thuiswonende-kinderen" data-simply-transformer="boolean">Ja</td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
     <!-- /Component HTML templates -->
     <utrecht-html-content class="utrecht-theme">
       <div is="simply-component" rel="header"></div>
@@ -393,23 +562,40 @@
         <div is="simply-component" rel="utrecht-input-submit"></div>
         
     </template>
+    <template data-simply-template="edit">
+        <div class="vil-pageframe-main">
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="edit-woonplaats"></div>
+            <div is="simply-component" rel="edit-ouder-dan-21"></div>
+            <div is="simply-component" rel="edit-aow"></div>
+            <div is="simply-component" rel="edit-alleenstaande"></div>
+            <div is="simply-component" rel="edit-thuiswonend"></div>
+          </div>
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="edit-inkomen"></div>
+            <div is="simply-component" rel="edit-vermogen"></div>
+            <div is="simply-component" rel="edit-button-group"></div>
+          </div>
+        </div>
+    </template>
     <template data-simply-template="home">
         <div class="vil-pageframe-main">
           <div class="vil-pageframe-content">
-            <div is="simply-component" rel="utrecht-login-form"></div>
+            <div is="simply-component" rel="login-form"></div>
           </div>
           <div class="vil-pageframe-content">
-            <div is="simply-component" rel="utrecht-login-explainer"></div>
+            <div is="simply-component" rel="login-explainer"></div>
           </div>
         </div>
     </template>
     <template data-simply-template="view">
         <div class="vil-pageframe-main">
           <div class="vil-pageframe-content">
-            <div is="simply-component" rel="utrecht-table"></div>
+            <div is="simply-component" rel="view-overview"></div>
+            <div is="simply-component" rel="view-navigation"></div>
           </div>
           <div class="vil-pageframe-content">
-            <div is="simply-component" rel="utrecht-login-explainer"></div>
+            <div is="simply-component" rel="view-explainer"></div>
           </div>
         </div>
     </template>
@@ -421,6 +607,52 @@
     <script>
       /* Transformers */
       editor.transformers = {
+      "boolean" : {
+        render : function(data) {
+            this.simplyData = data;
+            if (data === null) {
+              return "Onbekend";
+            }
+            if (data === true) {
+              return "Ja";
+            }
+            if (data === false) {
+              return "Nee";
+            }
+            return "Onbekend";
+          }
+          
+          ,
+        extract : function(data) {
+            return this.simplyData;
+          }
+          
+          
+      },
+      "currency" : {
+        render : function(data) {
+            this.simplyData = data;
+            if (data === null) {
+              return "Onbekend";
+            }
+          
+            // Create our number formatter.
+            const formatter = new Intl.NumberFormat('nl-NL', {
+              style: 'currency',
+              currency: 'EUR',
+          
+              // These options are needed to round to whole numbers if that's what you want.
+              //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+              //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+            });
+          
+            return formatter.format(data);
+          }
+          ,
+        extract : function(data) {
+            return this.simplyData;
+          }
+      }
       };
       /* /Transformers */
     </script>
