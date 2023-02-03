@@ -5,11 +5,17 @@
     <!-- Component CSS -->
     <style>
       /* header */
-      header.vil-header .vil-logo{
+      header.vil-header .vil-home-link {
         display: flex;
         align-items: center;
       }
       
+      header.vil-header .vil-home-link span {
+        color: var(--utrecht-paragraph-color, var(--utrecht-document-color, inherit));
+      }
+      header.vil-header .vil-home-link:link {
+        text-decoration: none;
+      }
       header.vil-header img {
         height: var(--vil-logo-height);
         margin-right: var(--vil-gutter-width);
@@ -222,8 +228,12 @@
           <div is="simply-component" rel="menu"></div>
         </nav>
         <div class="vil-logo">
-          <img src="https://i.postimg.cc/3NpqwDxm/wireframe-block.png" alt="placeholder logo"> 
-          <span class="vil-logo-text">Header placeholder text</span>
+          <h1>
+            <a href="#" class="vil-home-link">
+            	<img src="https://i.postimg.cc/3NpqwDxm/wireframe-block.png" alt="Logo"> 
+            	<span class="vil-logo-text">Virtueel InkomstenLoket</span>
+            </a>
+          </h1>
         </div>
         <!-- div is="simply-component" rel="menu"></div -->
       </header>
@@ -245,17 +255,15 @@
     <template id="utrecht-login-form">
       <form class="utrecht-form" method="POST" action=".">
         <div class="vil-form-group">
-          <input type="text" list="users">   
-          <datalist id="users">
-            <option>user 1</option>
-            <option>user 2</option>
-            <option>user 3</option>
+          <input type="url" list="webid-providers" autocomplete="url" placeholder="Kies uw WebID provider om in te loggen">   
+          <datalist id="webid-providers">
+            <option>https://solidcommunity.net/</option>
+            <option>https://mijnsolidpod.nl/</option>
           </datalist>
           <button type="submit">Inloggen</button>
         </div>
       </form>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      <a href="">Uitleg</a>
+      <p>Verbind met uw Solid Pod om de inkomenstoets uit te voeren.</p>
     </template>
     <template id="utrecht-menu">
       <div class="utrecht-navhtml">
@@ -342,19 +350,45 @@
         </tbody>
       </table>
     </template>
+    <template id="utrecht-topnav">
+      <nav class="topnav">
+        <ul class="utrecht-topnav__list">
+          <li class="utrecht-topnav__item">
+            <a class="utrecht-topnav__link" href="https://example.com/">
+              Wonen en leven
+            </a>
+          </li>
+          <li class="utrecht-topnav__item">
+            <a class="utrecht-topnav__link" href="https://example.com/">
+              Werk en inkomen
+            </a>
+          </li>
+          <li class="utrecht-topnav__item">
+            <a class="utrecht-topnav__link" href="https://example.com/">
+              Ondernemen
+            </a>
+          </li>
+          <li class="utrecht-topnav__item">
+            <a class="utrecht-topnav__link" href="https://example.com/">
+              Bestuur en organisatie
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </template>
     <!-- /Component HTML templates -->
     <utrecht-html-content class="utrecht-theme">
       <div is="simply-component" rel="header"></div>
       <div class="main" data-simply-field="page" data-simply-content="template">
     <!-- Page HTML templates -->
     <template data-simply-template="component-preview">
+        <div is="simply-component" rel="utrecht-topnav"></div>
         <div is="simply-component" rel="utrecht-table"></div>
         <div is="simply-component" rel="utrecht-button"></div>
         <div is="simply-component" rel="utrecht-select"></div>
         <div is="simply-component" rel="utrecht-blockquote"></div>
-        <form>
-          <div is="simply-component" rel="utrecht-input-submit"></div>
-        </form>
+        <div is="simply-component" rel="utrecht-input-submit"></div>
+        
     </template>
     <template data-simply-template="home">
         <div class="vil-pageframe-main">

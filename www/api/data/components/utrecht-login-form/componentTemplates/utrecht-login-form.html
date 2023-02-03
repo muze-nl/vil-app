@@ -1,13 +1,11 @@
 <form class="utrecht-form" method="POST" action=".">
   <div class="vil-form-group">
-    <input type="text" list="users">   
-    <datalist id="users">
-      <option>user 1</option>
-      <option>user 2</option>
-      <option>user 3</option>
+    <input type="url" list="webid-providers" autocomplete="url" placeholder="Kies uw WebID provider om in te loggen">   
+    <datalist id="webid-providers">
+      <option>https://solidcommunity.net/</option>
+      <option>https://mijnsolidpod.nl/</option>
     </datalist>
     <button type="submit">Inloggen</button>
   </div>
 </form>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-<a href="">Uitleg</a>
+<p>Verbind met uw Solid Pod om de inkomenstoets uit te voeren.</p>
