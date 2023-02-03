@@ -7,6 +7,12 @@
     </style>
     <!-- /Component CSS -->
     <!-- Head HTML -->
+    <!-- design-system -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@utrecht/design-tokens/dist/index.css">
+    <script
+      src="https://unpkg.com/@utrecht/web-component-library-stencil/dist/utrecht/utrecht.esm.js"
+      type="module"
+    ></script>
     <!-- /Head HTML -->
     <script>
       var simplyDataApi = {};
@@ -166,17 +172,79 @@
     <!-- Body HTML -->
     <!-- /Body HTML -->
     <!-- Component HTML templates -->
+    <template id="utrecht-blockquote">
+      <blockquote>
+        <p>The Quick Brown Fox Jumps Over The Lazy Dog</p>
+      </blockquote>
+    </template>
+    <template id="utrecht-button">
+      <button type="button">The Quick Brown Fox Jumps Over The Lazy Dog</button>
+    </template>
+    <template id="utrecht-input-submit">
+      <input type="text" placeholder="foo"><input type="submit" value="Submit">
+    </template>
+    <template id="utrecht-select">
+      <select class="utrecht-select">
+        <option value="1">Option #1</option>
+        <option value="2" selected="">
+          Option #2
+        </option>
+        <option value="3">Option #3</option>
+      </select>
+    </template>
+    <template id="utrecht-table">
+      <table
+             lang="nl"
+             summary="Overzicht van de stemmen voor en tegen het betaald parkeren."
+      >
+        <caption>Uitslag internetpeiling 8 juni tot en met 28 juni</caption>
+        <thead>
+          <tr>
+            <th scope="col">Gebied</th>
+            <th scope="col" class="numeric">
+              Voor
+            </th>
+            <th scope="col" class="numeric">
+              Tegen
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Locatie A</td>
+            <td class="numeric">53</td>
+            <td class="numeric">113</td>
+          </tr>
+          <tr>
+            <td>Locatie B</td>
+            <td class="numeric">58</td>
+            <td class="numeric">42</td>
+          </tr>
+          <tr>
+            <td>Locatie C</td>
+            <td class="numeric">87</td>
+            <td class="numeric">16</td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
     <!-- /Component HTML templates -->
+    <utrecht-html-content class="utrecht-theme">
       <nav>
         <div is="simply-component" rel="menu"></div>
       </nav>
       <div class="main" data-simply-field="page" data-simply-content="template">
     <!-- Page HTML templates -->
     <template data-simply-template="home">
-        <h1>Simply Code Skeleton</h1>
+        <h1>Vil app</h1>
+        <div is="simply-component" rel="utrecht-table"></div>
+        <div is="simply-component" rel="utrecht-button"></div>
+        <div is="simply-component" rel="utrecht-select"></div>
+        <div is="simply-component" rel="utrecht-blockquote"></div>
     </template>
     <!-- /Page HTML templates -->
-    </div>
+      </div>
+    </utrecht-html-content>
     <script src="/js/simply.everything.js"></script>
     <script src="/js/simply-edit.js" data-api-key="muze"></script>
     <script>
