@@ -11,7 +11,8 @@
       }
       
       header.vil-header img {
-        height: 64px;
+        height: var(--vil-logo-height);
+        margin-right: var(--vil-gutter-width);
       }
       /* pageframe-styling */
       .vil-pageframe-main {
@@ -33,6 +34,11 @@
           width: 100%;
           padding-right: inherit;
         }
+      }
+      /* root-styles */
+      :root {
+        --vil-gutter-width: 1em;
+        --vil-logo-height: 64px;
       }
       /* login-form */
       .vil-form-group {
@@ -219,6 +225,7 @@
           <img src="https://i.postimg.cc/3NpqwDxm/wireframe-block.png" alt="placeholder logo"> 
           <span class="vil-logo-text">Header placeholder text</span>
         </div>
+        <!-- div is="simply-component" rel="menu"></div -->
       </header>
     </template>
     <template id="utrecht-login-explainer">
@@ -249,6 +256,35 @@
       </form>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
       <a href="">Uitleg</a>
+    </template>
+    <template id="utrecht-menu">
+      <div class="utrecht-navhtml">
+        <nav class="topnav utrecht-topnav">
+          <ul class="utrecht-topnav__list">
+            <li class="utrecht-topnav__item">
+              <a class="utrecht-topnav__link" href="https://example.com/">
+                Wonen en leven
+              </a>
+            </li>
+            <li class="utrecht-topnav__item">
+              <a class="utrecht-topnav__link" href="https://example.com/">
+                Werk en inkomen
+              </a>
+            </li>
+            <li class="utrecht-topnav__item">
+              <a class="utrecht-topnav__link" href="https://example.com/">
+                Ondernemen
+              </a>
+            </li>
+            <li class="utrecht-topnav__item">
+              <a class="utrecht-topnav__link" href="https://example.com/">
+                Bestuur en organisatie
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      
     </template>
     <template id="utrecht-blockquote">
       <blockquote>

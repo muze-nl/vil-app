@@ -4,5 +4,6 @@ header.vil-header .vil-logo{
 }
 
 header.vil-header img {
-  height: 64px;
+  height: var(--vil-logo-height);
+  margin-right: var(--vil-gutter-width);
 }
