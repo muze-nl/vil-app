@@ -1,3 +1,3 @@
 function(el) {
-  document.location.href + "#edit"
+  document.location.hash = "#edit"
 }

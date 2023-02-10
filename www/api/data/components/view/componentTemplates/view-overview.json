@@ -1,7 +1,9 @@
 {
-  "woonplaats" : "Utrecht",
-  "aow-leeftijd-behaald" : false,
-  "ouder-dan-21" : true,
-  "alleenstaande" : true,
-  "thuiswonende-kinderen" : true
+  "profile" : {
+    "woonplaats" : "Utrecht",
+    "aow-leeftijd-behaald" : false,
+    "ouder-dan-21" : true,
+    "alleenstaande" : true,
+    "thuiswonende-kinderen" : true
+  }
 }

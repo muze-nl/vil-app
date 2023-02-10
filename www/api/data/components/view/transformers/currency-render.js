@@ -1,6 +1,9 @@
 function(data) {
   this.simplyData = data;
-  if (data === null) {
+  if (
+    (data === null) ||
+    (data === "")
+  ) {
     return "Onbekend";
   }
 
