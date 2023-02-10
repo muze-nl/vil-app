@@ -1,0 +1,10 @@
+.vil-check-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vil-check-container img {
+  width: 128px;
+  height: auto;
+}
