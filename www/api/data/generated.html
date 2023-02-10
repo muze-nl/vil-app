@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Component CSS -->
     <style>
+      /* check-styles */
+      .vil-check-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .vil-check-container img {
+        width: 128px;
+        height: auto;
+      }
       /* header */
       header.vil-header .vil-home-link {
         display: flex;
@@ -297,6 +308,9 @@
           /* /Actions */
           /* Commands */
           commands: {
+            backToView : function(el) {
+              document.location.hash="#view";
+            },
             back : function(el) {
               document.location.hash="#view";
             },
@@ -322,16 +336,6 @@
           /* /Commands */
           /* Routes */
           routes: {
-            "#component-preview" : function(params) {
-              editor.pageData.page = "component-preview";
-            },
-            "#edit" : function(params) {
-              simplyApp.actions.getProfile()
-              .then(function(profile) {
-                editor.pageData.profile = profile;
-                editor.pageData.page = "edit";
-              });
-            },
             "#check" : function(params) {
               simplyApp.actions.getProfile()
               .then(function(profile) {
@@ -341,6 +345,16 @@
               .then(function(eligable) {
                 editor.pageData.eligable = eligable;
                 editor.pageData.page = "check";
+              });
+            },
+            "#component-preview" : function(params) {
+              editor.pageData.page = "component-preview";
+            },
+            "#edit" : function(params) {
+              simplyApp.actions.getProfile()
+              .then(function(profile) {
+                editor.pageData.profile = profile;
+                editor.pageData.page = "edit";
               });
             },
             "#view" : function(params) {
@@ -374,6 +388,27 @@
     <!-- Body HTML -->
     <!-- /Body HTML -->
     <!-- Component HTML templates -->
+    <template id="approved">
+      <div class="vil-check-container">
+        <img src="https://i.postimg.cc/9FL9mVs7/vink.png" alt="approved-mark" >
+        <p>U komt op basis van deze gegevens in aanmerking voor een inkomstenbelasting.</p>
+        <button data-simply-command="apply">Aanvraag indienen</button>
+        <button data-simply-command="backToView">Terug</button>
+      </div>
+    </template>
+    <template id="not-approved">
+      <div class="vil-check-container">
+        <img src="https://i.postimg.cc/CxyRL1md/xmark.png" alt="unapproved-mark" >
+        <p>U komt op basis van deze gegevens niet in aanmerking voor een inkomstenbelasting.</p>
+        <button data-simply-command="backToView">Terug</button>
+      </div>
+    </template>
+    <template id="result">
+      <div data-simply-field="results-overview" data-simply-content="template" data-simply-default-template="false" data-simply-default-value="false">
+        <template data-simply-template="false" rel="not-approved"></template>
+        <template data-simply-template="true" rel="approved"></template>
+      </div>
+    </template>
     <template id="edit-alleenstaande">
       <div class="vil-input">
         <label for="alleenstaande">Alleenstaande</label>
@@ -495,11 +530,6 @@
       </form>
       <p>Verbind met uw Solid Pod om de inkomenstoets uit te voeren.</p>
     </template>
-    <template id="result">
-      <div data-simply-field="results-overview" data-simply-content="template" data-simply-default-tempalte="not-approved" data-simply-default-value="false">
-        
-      </div>
-    </template>
     <template id="utrecht-blockquote">
       <blockquote>
         <p>The Quick Brown Fox Jumps Over The Lazy Dog</p>
@@ -606,7 +636,7 @@
       <button type="submit" data-simply-command="edit">Gegevens aanvullen</button>
     </template>
     <template id="view-navigation">
-      <div data-simply-field="profileFieldsComplete" data-simply-content="template" data-simply-default-tempalte="false" data-simply-default-value="false">
+      <div data-simply-field="profileFieldsComplete" data-simply-content="template" data-simply-default-template="false" data-simply-default-value="false">
         <template data-simply-template="true" rel="view-navigation-complete"></template>
         <template data-simply-template="false" rel="view-navigation-incomplete"></template>
       </div>
@@ -658,6 +688,16 @@
       <div is="simply-component" rel="header"></div>
       <div class="main" data-simply-field="page" data-simply-content="template">
     <!-- Page HTML templates -->
+    <template data-simply-template="check">
+        <div class="vil-pageframe-main">
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="result"></div>
+          </div>
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="view-overview"></div>
+          </div>
+        </div>
+    </template>
     <template data-simply-template="component-preview">
         <div is="simply-component" rel="utrecht-topnav"></div>
         <div is="simply-component" rel="utrecht-table"></div>
@@ -681,16 +721,6 @@
           </div>
           <div class="vil-pageframe-content">
             <div is="simply-component" rel="login-explainer"></div>
-          </div>
-        </div>
-    </template>
-    <template data-simply-template="check">
-        <div class="vil-pageframe-main">
-          <div class="vil-pageframe-content">
-            
-          </div>
-          <div class="vil-pageframe-content">
-            <div is="simply-component" rel="view-overview"></div>
           </div>
         </div>
     </template>
