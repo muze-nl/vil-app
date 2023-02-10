@@ -1,0 +1,11 @@
+{
+  "profile" : {
+    "woonplaats" : "Amersfoort",
+    "ouder-dan-21" : true,
+    "aow-leeftijd-behaald" : false,
+    "alleenstaande" : true,
+    "thuiswonende-kinderen" : true,
+    "inkomen-per-maand" : 2000,
+    "vermogen" : 20000
+  }
+}
