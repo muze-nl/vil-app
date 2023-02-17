@@ -10,16 +10,20 @@ function() {
           return response.text();
         })
         .then(function(profile) {
-          console.log(profile);
+          editor.pageData.profileData = profile;
           editor.pageData.profileLoaded = true;
-          // FIXME: actually fetch fields from the profile
-          return {
+          return {};
+/*
+		  return {
             "woonplaats" : "Utrecht",
             "aow-leeftijd-behaald" : false,
             "ouder-dan-21" : true,
             "alleenstaande" : true,
-            "thuiswonende-kinderen" : true
+            "thuiswonende-kinderen" : true,
+            "vermogen" : null,
+            "inkomen-per-maand" : null
           }
+*/
         });
       } else {
         console.log("returning cached profile");
