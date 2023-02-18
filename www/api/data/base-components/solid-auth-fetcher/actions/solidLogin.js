@@ -7,7 +7,7 @@ function(webIdProvider, returnPage) {
     } else {
       solidAuthFetcher.login({
         oidcIssuer: webIdProvider,
-        redirect: document.location.href // returnPage
+        redirect: returnPage
       })
       .then(function(session) {
         editor.pageData.webId = session.webId;
