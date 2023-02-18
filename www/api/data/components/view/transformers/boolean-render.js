@@ -6,10 +6,20 @@ function(data) {
   ) {
     return "Onbekend";
   }
-  if (data === true) {
+  if (
+    (data === true) ||
+    (data === "1") ||
+    (data === "true") ||
+    (data === 1)
+  ) {
     return "Ja";
   }
-  if (data === false) {
+  if(
+    (data === false) ||
+    (data === "0") ||
+    (data === "false") ||
+    (data === 0)
+  ) {
     return "Nee";
   }
   return "Onbekend";

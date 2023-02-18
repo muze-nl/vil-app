@@ -1,40 +1,46 @@
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Benodigd gegeven</th>
-      <th scope="col">
-        Uitgelezen waarde
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Woonplaats</td>
-      <td data-simply-field="profile.woonplaats">Utrecht</td>
-    </tr>
-    <tr>
-      <td>AOW Leeftijd behaald</td>
-      <td data-simply-field="profile.aow-leeftijd-behaald" data-simply-transformer="boolean">Nee</td>
-    </tr>
-    <tr>
-      <td>Ouder dan 21</td>
-      <td data-simply-field="profile.ouder-dan-21" data-simply-transformer="boolean">Ja</td>
-    </tr>
-    <tr>
-      <td>Inkomen per maand</td>
-      <td data-simply-field="profile.inkomen-per-maand" data-simply-transformer="currency">Onbekend</td>
-    </tr>
-    <tr>
-      <td>Vermogen</td>
-      <td data-simply-field="profile.vermogen" data-simply-transformer="currency">Onbekend</td>
-    </tr>
-    <tr>
-      <td>Alleenstaande</td>
-      <td data-simply-field="profile.alleenstaande" data-simply-transformer="boolean">Nee</td>
-    </tr>
-    <tr>
-      <td>Thuiswonende kinderen</td>
-      <td data-simply-field="profile.thuiswonende-kinderen" data-simply-transformer="boolean">Ja</td>
-    </tr>
-  </tbody>
-</table>
+  <div class="utrecht-html">
+    <table class="vil-overview" data-simply-field="webId" data-simply-content="attributes" data-simply-attributes="about">
+    <thead>
+      <tr>
+        <th scope="col">Benodigd gegeven</th>
+        <th scope="col">
+          Uitgelezen waarde
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Woonplaats</td>
+        <td property="vil:woonplaats" data-simply-transformer="rdf" data-simply-field="profile.woonplaats"></td>
+      </tr>
+      <tr>
+        <td>Leeftijd</td>
+        <td property="vil:leeftijd" data-simply-transformer="rdf" data-simply-field="profile.leeftijd"></td>
+      </tr>
+      <tr>
+        <td>AOW Leeftijd behaald</td>
+        <td property="vil:aowLeeftijdBehaald" data-simply-transformer="rdf-boolean" data-simply-field="profile.aow-leeftijd-behaald">Nee</td>
+      </tr>
+      <tr>
+        <td>Ouder dan 21</td>
+        <td property="vil:ouderDan21" data-simply-transformer="rdf-boolean" data-simply-field="profile.ouder-dan-21">Nee</td>
+      </tr>
+      <tr>
+        <td>Inkomen per maand</td>
+        <td property="vil:inkomenPerMaand" data-simply-transformer="rdf-currency" data-simply-field="profile.inkomen-per-maand"></td>
+      </tr>
+      <tr>
+        <td>Vermogen</td>
+        <td property="vil:vermogen" data-simply-transformer="rdf-currency" data-simply-field="profile.vermogen"></td>
+      </tr>
+      <tr>
+        <td>Alleenstaande</td>
+        <td property="vil:alleenstaande" data-simply-transformer="rdf-boolean" data-simply-field="profile.alleenstaande">Nee</td>
+      </tr>
+      <tr>
+        <td>Thuiswonende kinderen</td>
+        <td property="vil:thuiswonendeKinderen" data-simply-transformer="rdf-boolean" data-simply-field="profile.thuiswonende-kinderen">Nee</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>

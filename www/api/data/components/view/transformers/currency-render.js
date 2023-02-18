@@ -2,7 +2,8 @@ function(data) {
   this.simplyData = data;
   if (
     (data === null) ||
-    (data === "")
+    (data === "") ||
+    (isNaN(data))
   ) {
     return "Onbekend";
   }
