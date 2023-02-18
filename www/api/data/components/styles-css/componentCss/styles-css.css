@@ -1,6 +1,7 @@
 .vil-input {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1em;
 }
 
 .vil-input select {
