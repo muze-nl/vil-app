@@ -1,11 +1,9 @@
-<form class="utrecht-form" method="POST" action="#">
-  <div class="vil-form-group">
-    <input name="webIdProvider" data-simply-field="webIdProvider" type="text" list="webid-providers" autocomplete="url" placeholder="Kies uw WebID provider om in te loggen">
-    <datalist id="webid-providers">
-      <option value="https://solidcommunity.net/">https://solidcommunity.net/</option>
-      <option value="https://mijnsolidpod.nl/">https://mijnsolidpod.nl/</option>
-    </datalist>
-    <button type="submit" data-simply-command="login">Inloggen</button>
-  </div>
+<form class="utrecht-search-bar" method="POST" action="#">
+  <input class="utrecht-search-bar__input utrecht-textbox utrecht-textbox utrecht-textbox--html-input" name="webIdProvider" data-simply-field="webIdProvider" type="text" list="webid-providers" autocomplete="url" placeholder="Kies uw WebID provider om in te loggen">
+  <datalist id="webid-providers">
+    <option value="https://solidcommunity.net/">https://solidcommunity.net/</option>
+    <option value="https://mijnsolidpod.nl/">https://mijnsolidpod.nl/</option>
+  </datalist>
+  <button class="utrecht-search-bar__button utrecht-button utrecht-button--primary-action" type="submit" data-simply-command="login">Inloggen</button>
 </form>
 <p>Verbind met uw Solid Pod om de inkomenstoets uit te voeren.</p>
