@@ -79,7 +79,7 @@ class http {
 	{
 		list($header, $headerValue) = self::getHeader('REQUEST_METHOD',3);
 		if ($headerValue==='POST') {
-			if ($_GET['_method']=='PUT'||$_GET['_method']=='DELETE') {
+			if (isset($_GET['_method']) && ($_GET['_method']=='PUT'||$_GET['_method']=='DELETE')) {
 				$headerValue = $_GET['_method'];
 			}
 		}
