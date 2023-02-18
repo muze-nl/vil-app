@@ -15,6 +15,6 @@
   
   .vil-pageframe-content {
     width: 100%;
-    padding-right: inherit;
+	margin-bottom: 1.5em;
   }
 }
