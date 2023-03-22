@@ -1,6 +1,6 @@
 function() {
   var store = new $rdf.graph();
-  var subject = editor.pageData.webId;
+  var storeBaseUrl = "<" + editor.pageData.webId + ">";
 
   var subject = store.sym(editor.pageData.webId);
   var doc = subject.doc();
@@ -15,5 +15,5 @@ function() {
   store.add(subject, vil2('alleenstaande'), editor.pageData.profile['alleenstaande']);
   store.add(subject, vil2('woonplaats'), editor.pageData.profile['woonplaats']);
  
-  return $rdf.serialize(null, store, editor.pageData.webId, 'text/turtle');
+  return $rdf.serialize(null, store, storeBaseUrl, 'text/turtle');
 }

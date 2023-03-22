@@ -4,7 +4,6 @@ function() {
     if (solidClientAuthentication.default.getDefaultSession().info.isLoggedIn) {
       editor.pageData.webId = solidClientAuthentication.default.getDefaultSession().info.webId;
       if (!editor.pageData.profileLoaded) {
-        console.log("fetching profile");
         return solidClientAuthentication.default.fetch(editor.pageData.webId)
           .then(function(response) {
           return response.text();

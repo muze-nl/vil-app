@@ -269,7 +269,6 @@
                 if (solidClientAuthentication.default.getDefaultSession().info.isLoggedIn) {
                   editor.pageData.webId = solidClientAuthentication.default.getDefaultSession().info.webId;
                   if (!editor.pageData.profileLoaded) {
-                    console.log("fetching profile");
                     return solidClientAuthentication.default.fetch(editor.pageData.webId)
                       .then(function(response) {
                       return response.text();
@@ -356,7 +355,7 @@
               })
               .then(function(eligableAmount) {
                 if (eligableAmount > 0) {
-                  var inboxUrl = "https://mijnsolidpod.nl/ylebre2/inbox/";
+                  var inboxUrl = "https://mijnsolidpod.nl/utrecht-vil/inbox/";
                   let body = simplyApp.actions.generateProfile();
                   return solidClientAuthentication.default.fetch(inboxUrl, {
                     method: 'POST',
@@ -378,7 +377,7 @@
             },
             generateProfile : function() {
               var store = new $rdf.graph();
-              var subject = editor.pageData.webId;
+              var storeBaseUrl = "<" + editor.pageData.webId + ">";
             
               var subject = store.sym(editor.pageData.webId);
               var doc = subject.doc();
@@ -393,7 +392,7 @@
               store.add(subject, vil2('alleenstaande'), editor.pageData.profile['alleenstaande']);
               store.add(subject, vil2('woonplaats'), editor.pageData.profile['woonplaats']);
              
-              return $rdf.serialize(null, store, editor.pageData.webId, 'text/turtle');
+              return $rdf.serialize(null, store, storeBaseUrl, 'text/turtle');
             },
             resolveNameSpace : function(element, namespace) {
               var xmlNamespace = "xmlns:" + namespace;

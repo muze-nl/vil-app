@@ -6,7 +6,7 @@ function() {
   })
   .then(function(eligableAmount) {
     if (eligableAmount > 0) {
-      var inboxUrl = "https://mijnsolidpod.nl/ylebre2/inbox/";
+      var inboxUrl = "https://mijnsolidpod.nl/utrecht-vil/inbox/vil-aanvragen/";
       let body = simplyApp.actions.generateProfile();
       return solidClientAuthentication.default.fetch(inboxUrl, {
         method: 'POST',
