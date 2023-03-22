@@ -84,9 +84,15 @@
     <!-- rdflib -->
     <script src="/js/rdflib.min.js"></script>
     <!-- solid-auth-fetcher -->
-    <script src="/js/solid-auth-fetcher.bundle.js"></script>
+    <!-- script src="/js/solid-auth-fetcher.bundle.js"></script -->
     <!-- solid-client-authn.bundle -->
-    <!-- script src="/js/solid-client-authn.bundle.js"></script -->
+    <script src="/js/solid-client-authn.bundle.js"></script>
+    <script>
+       // monkeypatch it so 1.12.1 mimics the syntax used in 1.13.2
+      if (typeof solidClientAuthentication.default === "undefined") {
+        solidClientAuthentication.default = solidClientAuthentication;
+      }
+    </script>
     <!-- design-system -->
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/@utrecht/component-library-css/dist/html.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/@utrecht/component-library-css/dist/index.css">
@@ -263,7 +269,7 @@
         simplyApp = simply.app({
           /* Actions */
           actions: {
-            getProfile : function() {
+            getProfileOld : function() {
               return solidAuthFetcher.getSession()
               .then(function(session) {
                 if (session) {
@@ -297,7 +303,7 @@
                 }
               }); 
             },
-            saveProfile : function(webId, changes) {
+            saveProfileOld : function(webId, changes) {
               console.log(changes);
             
               /*
@@ -374,7 +380,7 @@
             */
             }
                                  ,
-            solidLogin : function(webIdProvider, returnPage) {
+            solidLoginOld : function(webIdProvider, returnPage) {
               var session = solidAuthFetcher.getSession()
               .then(function(session) {
                 if (session) {
@@ -391,7 +397,7 @@
                 }
               });
             },
-            getProfile1 : function() {
+            getProfile : function() {
               return solidClientAuthentication.default.handleIncomingRedirect({ restorePreviousSession : true })
               .then(function() {
                 if (solidClientAuthentication.default.getDefaultSession().info.isLoggedIn) {
@@ -415,7 +421,7 @@
                 }
               });
             },
-            saveProfile1 : function(webId, changes) {
+            saveProfile : function(webId, changes) {
               var parts = []; 
               var counter = 1;
               changes.forEach(function(change) {
@@ -456,7 +462,7 @@
               return Promise.all(promises);
             }
                                  ,
-            solidLogin1 : function(webIdProvider, returnPage) {
+            solidLogin : function(webIdProvider, returnPage) {
               if (!solidClientAuthentication.default.getDefaultSession().info.isLoggedIn) {
                 solidClientAuthentication.default.login({
                   // Specify the URL of the user's Solid Identity Provider;
@@ -475,6 +481,53 @@
                 editor.pageData.webId = solidClientAuthentication.default.getDefaultSession().info.webId;
                 document.location.href = returnPage;
               }
+            },
+            apply : function() {
+              return simplyApp.actions.getProfile()
+              .then(function(profile) {
+                editor.pageData.profile = profile;    
+                return simplyApp.actions.evaluate(editor.pageData.profile);
+              })
+              .then(function(eligableAmount) {
+                if (eligableAmount > 0) {
+                  var inboxUrl = "https://mijnsolidpod.nl/ylebre2/inbox/";
+                  let body = simplyApp.actions.generateProfile();
+                  return solidClientAuthentication.default.fetch(inboxUrl, {
+                    method: 'POST',
+                    headers: {
+                      "Content-Type": "text/turtle"
+                    },
+                    body: body
+                  })
+                  .then(function(response) {
+                    var location = response.headers.get('Location');
+                    var requestId = location.replace(inboxUrl, '');
+                    return requestId;
+                  });
+              
+                } else {
+                  throw new Exception("Not eligable");
+                }
+              });
+            },
+            generateProfile : function() {
+              var store = new $rdf.graph();
+              var subject = editor.pageData.webId;
+            
+              var subject = store.sym(editor.pageData.webId);
+              var doc = subject.doc();
+              var vil2 = new $rdf.Namespace('http://vil.app/#');
+              
+              store.add(subject, vil2('leeftijd'), editor.pageData.profile['leeftijd']);
+              store.add(subject, vil2('thuiswonendeKinderen'), editor.pageData.profile['leeftijd']);
+              store.add(subject, vil2('ouderDan21'), editor.pageData.profile['ouder-dan-21']);
+              store.add(subject, vil2('aowLeeftijdBehaald'), editor.pageData.profile['aow-leeftijd-behaald']);
+              store.add(subject, vil2('vermogen'), editor.pageData.profile['vermogen']);
+              store.add(subject, vil2('inkomenPerMaand'), editor.pageData.profile['inkomen-per-maand']);
+              store.add(subject, vil2('alleenstaande'), editor.pageData.profile['alleenstaande']);
+              store.add(subject, vil2('woonplaats'), editor.pageData.profile['woonplaats']);
+             
+              return $rdf.serialize(null, store, editor.pageData.webId, 'text/turtle');
             },
             resolveNameSpace : function(element, namespace) {
               var xmlNamespace = "xmlns:" + namespace;
@@ -513,6 +566,16 @@
           /* /Actions */
           /* Commands */
           commands: {
+            apply : function(el) {
+              return simplyApp.actions.apply()
+              .then(function(requestId) {
+                document.location.hash="#close/" + requestId;
+              })
+              .catch(function() {
+                // FIXME: more elegant error handling?
+              document.location.hash="#check";
+              });
+            },
             backToView : function(el) {
               document.location.hash="#view";
             },
@@ -574,6 +637,10 @@
           /* /Commands */
           /* Routes */
           routes: {
+            "#close/:requestId" : function(params) {
+              editor.pageData.requestId = params.requestId;
+              editor.pageData.page = "close";
+            },
             "#check" : function(params) {
               simplyApp.actions.getProfile()
               .then(function(profile) {
@@ -612,8 +679,8 @@
               });
             },
             "/" : function() {
-              if (false && document.location.search.match("code")) { // removed, needed for solid-client-authn-browser
-                solidClientAuthentication.default.handleIncomingRedirect({ restorePreviousSession : true })
+              if (document.location.search.match("code")) { // removed, needed for solid-client-authn-browser
+                solidClientAuthentication.default.handleIncomingRedirect() // { url: document.location.href, restorePreviousSession : true })
                 .then(function() {
                   document.location.hash = "#view";
                 });
@@ -671,6 +738,28 @@
         <template data-simply-template="checking" rel="checking"></template>
       </div>
     </template>
+    <template id="close-explainer">
+      <section class="utrecht-spotlight-section utrecht-spotlight-section--info">
+        <h1 class="utrecht-heading-1">
+          De aanvraag is in behandeling
+        </h1>
+        <p class="utrecht-paragraph utrecht-paragraph--distanced">
+          De gegevens voor de aanvraag zijn zojuist ingediend bij de gemeente.
+        </p>
+        <p class="utrecht-paragraph utrecht-paragraph--distanced">
+          Dit is het einde van deze demonstratie.
+        </p>
+      </section>
+    </template>
+    <template id="close-page">
+      <h1>  De aanvraag is ingediend.</h1>
+      <p>
+        Noteer de volgende code voor eventuele vragen over de aanvraag:
+        <span data-simply-field="requestId"></span>
+      <p>
+        Dit venster kan nu worden gesloten.
+      </p>
+    </template>
     <template id="edit-alleenstaande">
       <div class="vil-input">
         <label for="alleenstaande">Alleenstaande</label>
@@ -696,13 +785,17 @@
       <button class="utrecht-button utrecht-button--active utrecht-button--primary-action" type="submit" data-simply-command="save">Opslaan</button>
     </template>
     <template id="edit-explainer">
-      <section class="utrecht-spotlight-section utrecht-spotlight-section--info">
-        <h1>Uw gegevens bijwerken</h1>
-        <p class="utrecht-paragraph"> 
-          In het formulier worden de gegevens getoond zoals die in uw Solid Pod staan.
-          Als u de gegevens aanvult of aanpast worden deze daarna in uw Solid Pod opgeslagen, zodat ze bij een volgende aanvraag al bekend zijn.
+      <div class="utrecht-spotlight-section utrecht-spotlight-section--info">
+        <p class="utrecht-paragraph utrecht-paragraph--distanced">
+          Met het Virtueel Inkomstenloket halen we de gegevens op die de overheid van jou heeft vastgelegd en opgeslagen. Met die gegevens bepalen we je mogelijke recht op inkomensondersteuning.
         </p>
-      </section>
+        <p class="utrecht-paragraph utrecht-paragraph--distanced">
+          Soms komt het voor dat die gegevens niet kloppen. Op deze pagina krijg je daarom de mogelijkheid om je gegevens zelf aan te passen. We gebruiken dan die aangepaste gegevens om het recht op de Individuele Inkomenstoeslag te bepalen.
+        </p>
+        <p class="utrecht-paragraph utrecht-paragraph--distanced">
+          Hou er rekening mee dat de gemeente om bewijs kan vragen voor de aangepaste gegevens.
+        </p>
+      </div>
     </template>
     <template id="edit-form">
       <div class="utrecht-html">
@@ -821,17 +914,13 @@
     <template id="login-explainer">
       <section class="utrecht-spotlight-section utrecht-spotlight-section--info">
         <h1 class="utrecht-heading-1">
-          Virtueel InkomstenLoket: Inkomenstoets
+          Welkom bij het Virtueel Inkomstenloket!
         </h1>
-        <p class="utrecht-paragraph">
-          Deze applicatie maakt gebruik van de gegevens uit uw Solid Pod.
-          Wij lezen de gegevens over uw inkomen uit. Als er gegevens ontbreken heeft u de mogelijkheid om deze zelf aan te vullen.
+        <p class="utrecht-paragraph utrecht-paragraph--distanced">
+          Met het Virtueel Inkomstenloket krijg je zeer eenvoudig een overzicht van financiële regelingen die je kan aanvragen, toegekend krijgen én ontvangen. Zo krijg je automatisch het geld op je rekening gestort waar je op basis van beschikbare regelingen recht hebt. Zonder gedoe.
         </p>
-        <h2 class="utrecht-heading-2 utrecht-heading-2--distanced">
-          Wat is een Solid Pod?
-        </h2>
-        <p class="utrecht-paragraph">
-          Een Solid Pod is een opslagplaats voor uw persoonslijke data.
+        <p class="utrecht-paragraph utrecht-paragraph--distanced">
+          Met deze demonstratie laten we je zien hoe dat kan werken voor de regeling Individuele Inkomenstoeslag van de gemeente Utrecht.
         </p>
       </section>
     </template>
@@ -982,14 +1071,14 @@
       </div>
     </template>
     <template id="view-explainer">
-      <section class="utrecht-spotlight-section utrecht-spotlight-section--info">
-        <h1 class="utrecht-heading-1">Deze gegevens zijn ingelezen</h1>
-        <p class="utrecht-paragraph">
-          In de tabel is een overzicht te zien van de gegevens die we hebben gevonden in de Solid Pod.
-          Als de gegevens volledig zijn ingevuld kunt u controleren of u in aanmerking komt voor een inkomenstoeslag.
-          Is dat het geval, kunt u eenvoudig de aanvraag indienen.
+      <div class="utrecht-spotlight-section utrecht-spotlight-section--info">
+        <p class="utrecht-paragraph utrecht-paragraph--distanced">
+          Met het Virtueel Inkomstenloket halen we de gegevens op die de overheid van jou heeft vastgelegd en opgeslagen. Met die gegevens bepalen we je mogelijke recht op inkomensondersteuning.
         </p>
-      </section>
+        <p class="utrecht-paragraph utrecht-paragraph--distanced">
+          De gegevens die nodig zijn om het recht op de Individuele Inkomenstoeslag te bepalen zie je hier.
+        </p>
+      </div>
     </template>
     <template id="view-navigation-complete">
       <p>De benodigde gegevens zijn aanwezig.</p>
@@ -1067,6 +1156,16 @@
           </div>
           <div class="vil-pageframe-content">
             <div is="simply-component" rel="view-overview"></div>
+          </div>
+        </div>
+    </template>
+    <template data-simply-template="close">
+        <div class="vil-pageframe-main">
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="close-page"></div>
+          </div>
+          <div class="vil-pageframe-content">
+            <div is="simply-component" rel="close-explainer"></div>
           </div>
         </div>
     </template>

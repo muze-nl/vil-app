@@ -1,6 +1,6 @@
 function() {
-  if (false && document.location.search.match("code")) { // removed, needed for solid-client-authn-browser
-    solidClientAuthentication.default.handleIncomingRedirect({ restorePreviousSession : true })
+  if (document.location.search.match("code")) { // removed, needed for solid-client-authn-browser
+    solidClientAuthentication.default.handleIncomingRedirect() // { url: document.location.href, restorePreviousSession : true })
     .then(function() {
       document.location.hash = "#view";
     });
