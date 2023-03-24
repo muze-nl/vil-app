@@ -355,7 +355,7 @@
               })
               .then(function(eligableAmount) {
                 if (eligableAmount > 0) {
-                  var inboxUrl = "https://mijnsolidpod.nl/utrecht-vil/inbox/";
+                  var inboxUrl = "https://mijnsolidpod.nl/utrecht-vil/inbox/vil-aanvragen/";
                   let body = simplyApp.actions.generateProfile();
                   return solidClientAuthentication.default.fetch(inboxUrl, {
                     method: 'POST',
@@ -616,8 +616,9 @@
     <template id="close-page">
       <h1>  De aanvraag is ingediend.</h1>
       <p>
-        Noteer de volgende code voor eventuele vragen over de aanvraag:
-        <span data-simply-field="requestId"></span>
+        Bewaar deze referentie voor eventuele vragen over de aanvraag:<br>
+        <strong><span data-simply-field="requestId"></span></strong>
+      </p>
       <p>
         Dit venster kan nu worden gesloten.
       </p>
