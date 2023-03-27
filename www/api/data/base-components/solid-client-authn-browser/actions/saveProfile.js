@@ -1,4 +1,4 @@
-function(webId, changes) {
+function(vilProfilePath, changes) {
   var parts = []; 
   var counter = 1;
   changes.forEach(function(change) {
@@ -26,7 +26,7 @@ function(webId, changes) {
   var promises = [];
   parts.forEach(function(body) {
     promises.push(
-      solidClientAuthentication.default.fetch(webId, {
+      solidClientAuthentication.default.fetch(vilProfilePath, {
         method: 'PATCH',
         headers: {
           "Content-Type": "text/n3"

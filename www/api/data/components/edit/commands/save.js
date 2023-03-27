@@ -29,7 +29,7 @@ function(el) {
     }
   });
   
-  simplyApp.actions.saveProfile(editor.pageData.webId, changes)
+  simplyApp.actions.saveProfile(editor.pageData.vilPath, changes)
   .then(function() {
     delete editor.pageData.profileData;
     delete editor.pageData.profileLoaded;
