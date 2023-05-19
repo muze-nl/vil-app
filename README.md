@@ -1,3 +1,5 @@
+[![License][license-shield]][license-link]
+
 # Initial setup
 Before starting the SimplyCode project, you need to do a few things before SimplyCode can work:
 
@@ -16,3 +18,11 @@ When cloning this repo, you want to remove the remote origin by removing the .gi
 This will ensure that you won't push any changes to your new project in this repository.
 
 Another option is to fork this repository and work from that version.
+
+## License
+
+Created by [Muze B.V.][muze-site] under an [MIT license][license-link].
+
+[license-link]: ./LICENSE
+[license-shield]: https://img.shields.io/github/license/muze-nl/vil-app.svg
+[muze-site]: https://muze.nl
