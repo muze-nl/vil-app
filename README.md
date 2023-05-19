@@ -55,13 +55,15 @@ to be changed to the user that runs Apache (usually `www-data`):
 
 This will ensure that you won't push any changes to your new project in this repository.
 
-Another option is to fork this repository and work from that version.
+Questions or feedback can be given by [opening an issue on GitHub][issues-link].
+
 
 ## License
 
 Created by [Muze B.V.][muze-site] under an [MIT license][license-link].
 
 [inkomenstoeslag-site]: https://www.rijksoverheid.nl/onderwerpen/participatiewet/vraag-en-antwoord/individuele-inkomenstoeslag
+[issues-link]: https://github.com/muze-nl/vil-app/issues
 [license-link]: ./LICENSE
 [license-shield]: https://img.shields.io/github/license/muze-nl/vil-app.svg
 [muze-shield]: https://img.shields.io/badge/%7BU%7D-Muze-BF1E2E.svg?labelColor=BF1E2E
