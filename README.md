@@ -13,6 +13,25 @@ of the [Municipality of Utrecht][utrecht-site].
 
 **⚠ This is a demo application, please do not provide any sensitive or personal information in this application!**
 
+## Install
+
+No installation needed. A live version can be visited at: https://vil.mijnsolidpod.nl/
+
+## Usage
+
+1. Visit the application and provide a Solid WebId<br>
+   ![img_1.png](docs/screenshot-01.png)
+2. Log in with your Solid Pod
+   ![img_2.png](docs/screenshot-02.png)
+3. Authorize the application to access your Solid Pod<br>
+   ![img_3.png](docs/screenshot-03.png)
+4. Provide the requested information<br>
+   ![img_4.png](docs/screenshot-04.png)
+5. The application will show you if you are eligible for the [Regeling Individuele Inkomenstoeslag][inkomenstoeslag-site]<br>
+   ![img_5.png](docs/screenshot-05.png)
+6. The information is stored in your Solid Pod<br>
+   ![img.png](docs/screenshot-06.png) 
+
 # Initial setup
 Before starting the SimplyCode project, you need to do a few things before SimplyCode can work:
 
